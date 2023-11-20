@@ -1,7 +1,7 @@
 const express = require("express");
 const { createServer } = require("http");
 const { Server } = require("socket.io");
-
+const ws_port = process.env.PORT || 3000;
 const app = express();
 const httpServer = createServer(app);
 const io = new Server(httpServer, { /* options */ });
@@ -33,6 +33,6 @@ socket.on("message", (message) => {
     });
 });
 
-httpServer.listen(3000, () => {
-    console.log("listening on http://localhost:3000");
+httpServer.listen(ws_port, () => {
+    console.log("");
 });
