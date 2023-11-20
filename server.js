@@ -16,7 +16,8 @@ app.get('/', (req, res) => {
 app.use(express.static('public'));
 
 io.on("connection", (socket) => {
-  // ...
+  ///random id
+  socket.uniqueId = Math.random() * 10000000;
   console.log("a user connected");
 
 socket.emit("message", "Hello from server");
@@ -27,11 +28,21 @@ socket.on("message", (message) => {
     socket.broadcast.emit("message", message);
 }
 );
+
+socket.on("CursorMove", (position) => {
+
+    console.log(position);
+    ///broadcast to all clients but sender
+    socket.broadcast.emit("CursorMove", {position: position, id: socket.uniqueId});
+}
+);
   
     socket.on("disconnect", () => {
       console.log("user disconnected");
     });
 });
+
+
 
 httpServer.listen(ws_port, () => {
     console.log("");
